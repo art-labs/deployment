@@ -1,0 +1,1 @@
+Get-LocalUser -Name "art1of8" | Enable-LocalUser
