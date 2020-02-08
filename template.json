@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnet_base_name": {
@@ -153,7 +153,7 @@
                 },
                 "osProfile": {
                     "computerName": "[concat(parameters('vm_base_name'),copyIndex())]",
-                    "adminUsername": "art1of8",
+                    "adminUsername": "art-admin",
                     "adminPassword": "[parameters('admin_password')]",
                     "windowsConfiguration": {
                         "provisionVMAgent": true,
@@ -171,6 +171,33 @@
                     ]
                 },
                 "licenseType": "Windows_Client"
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2018-06-01",
+            "name": "[concat(parameters('vm_base_name'),'_',copyIndex(),'/', 'script')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/',parameters('vm_base_name'),'_',copyIndex())]"
+            ],
+            "copy": {
+                "name": "extensionloop",
+                "count": "[parameters('count')]"
+            },
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.7",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://raw.githubusercontent.com/art-labs/deployment/master/script.ps1"
+                    ],
+                    "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File script.ps1"
+                },
+                "protectedSettings": {
+                }
             }
         },
         {
