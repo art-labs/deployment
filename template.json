@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vnet_base_name": {
@@ -194,7 +194,7 @@
                     "fileUris": [
                         "https://raw.githubusercontent.com/art-labs/deployment/master/script.ps1"
                     ],
-                    "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File script.ps1"
+                    "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File script.ps1',' -Password ', parameters('admin_password'))]"
                 },
                 "protectedSettings": {
                 }

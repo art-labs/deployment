@@ -15,6 +15,12 @@ Copy-Item "C:\Users\$user\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\
 
 }
 
+function Add-ArtUser {
+    net user art $Password /add /y
+    net localgroup Administrators art /add
+    net localgroup "Remote Desktop Users" art /add
+}
+
 Disable-OOBE
 Add-DesktopShortCutsToDefaultProfile
-net user art $Password /add /y
+Add-ArtUser
