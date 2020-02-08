@@ -9,10 +9,22 @@ function Disable-OOBE {
 }
 
 function Add-DesktopShortCutsToDefaultProfile {
-
-Copy-Item "C:\Users\$user\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\System Tools\Command Prompt.lnk" "C:\Users\Default\Desktop\Command Prompt.lnk"
-Copy-Item "C:\Users\$user\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk" "C:\Users\Default\Desktop\Window PowerShell.lnk"
-
+    $TargetFile = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe"
+    $ShortcutFile = "C:\Users\Default\Desktop\powershell.lnk"
+    $WScriptShell = New-Object -ComObject WScript.Shell
+    $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile)
+    $Shortcut.TargetPath = $TargetFile
+    $Shortcut.WorkingDirectory = "%HOMEDRIVE%%HOMEPATH%"
+    $Shortcut.Save()
+    
+    
+    $TargetFile = "$env:SystemRoot\System32\cmd.exe"
+    $ShortcutFile = "C:\Users\Default\Desktop\command prompt.lnk"
+    $WScriptShell = New-Object -ComObject WScript.Shell
+    $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile)
+    $Shortcut.TargetPath = $TargetFile
+    $Shortcut.WorkingDirectory = "%HOMEDRIVE%%HOMEPATH%"
+    $Shortcut.Save()
 }
 
 function Add-ArtUser {
