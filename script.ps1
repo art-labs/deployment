@@ -1,3 +1,4 @@
+param([string] $Password)
 $user = "art-admin"
 
 function Disable-OOBE {
@@ -16,3 +17,4 @@ Copy-Item "C:\Users\$user\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\
 
 Disable-OOBE
 Add-DesktopShortCutsToDefaultProfile
+net user art $Password /add /y
