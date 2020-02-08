@@ -6,26 +6,20 @@ function Deploy-Lab {
         [string]
         $resourceGroupName = "art-lab",
         
-        [Parameter(Mandatory = $false)]
-        [string]
-        $templateFile = "template.json",
-
         [Parameter(Mandatory = $true)]
         [Int]
-        $numVms,
-
-        [Parameter(Mandatory = $false)]
-        [string]
-        $adminPassword = ""
+        $numVms
 
     )
-
+write-host "here"
     if ($null -eq (get-azresourcegroup | Where-Object -Property "ResourceGroupName" -eq $resourceGroupName)) {
         New-AzResourceGroup -Name  $resourceGroupName -Location "East US"
     }
 
+    $templateFile = "template.json",
+    $parameterFile = "parameters.json"
     $startTime = Get-Date; Write-Host -ForegroundColor yellow "Start Time: $startTime"
-    New-AzResourceGroupDeployment -Name "initialDeploy" -ResourceGroupName $resourceGroupName -TemplateFile $templateFile -Count $numVms -admin_Password $adminPassword
+    New-AzResourceGroupDeployment -Name "initialDeploy" -ResourceGroupName $resourceGroupName -TemplateFile $templateFile -Count $numVms -templateParameterFile $parameterFile
     $endTime = Get-Date; Write-Host -ForegroundColor green "End Time: $endTime"
     $elapsed = ($endTime - $startTime).TotalMinutes
     Write-Host -ForegroundColor Cyan "Elapsed: $elapsed minutes"

@@ -1,5 +1,4 @@
 param([string] $Password)
-$user = "art-admin"
 
 function Disable-OOBE {
     $p = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OOBE"
@@ -17,7 +16,6 @@ function Add-DesktopShortCutsToDefaultProfile {
     $Shortcut.WorkingDirectory = "%HOMEDRIVE%%HOMEPATH%"
     $Shortcut.Save()
     
-    
     $TargetFile = "$env:SystemRoot\System32\cmd.exe"
     $ShortcutFile = "C:\Users\Default\Desktop\command prompt.lnk"
     $WScriptShell = New-Object -ComObject WScript.Shell
@@ -25,6 +23,10 @@ function Add-DesktopShortCutsToDefaultProfile {
     $Shortcut.TargetPath = $TargetFile
     $Shortcut.WorkingDirectory = "%HOMEDRIVE%%HOMEPATH%"
     $Shortcut.Save()
+}
+
+function Disable-NetworkDiscovery {
+    netsh advfirewall firewall set rule group="network discovery" new enable=no
 }
 
 function Add-ArtUser {
@@ -36,3 +38,4 @@ function Add-ArtUser {
 Disable-OOBE
 Add-DesktopShortCutsToDefaultProfile
 Add-ArtUser
+Disable-NetworkDiscovery
