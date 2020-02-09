@@ -26,7 +26,7 @@ function Add-DesktopShortCutsToDefaultProfile {
 }
 
 function Disable-NetworkDiscovery {
-    Set-NetConnectionProfile -Name (Get-NetConnectionProfile).Name -NetworkCategory Public
+    netsh advfirewall firewall set rule group="Network Discovery" new enable=No | Out-File c:\out.txt
 }
 
 function Add-ArtUser {
