@@ -9,14 +9,13 @@ function Deploy-Lab {
         [Parameter(Mandatory = $true)]
         [Int]
         $numVms
-
     )
-write-host "here"
+
     if ($null -eq (get-azresourcegroup | Where-Object -Property "ResourceGroupName" -eq $resourceGroupName)) {
         New-AzResourceGroup -Name  $resourceGroupName -Location "East US"
     }
 
-    $templateFile = "template.json",
+    $templateFile = "template.json"
     $parameterFile = "parameters.json"
     $startTime = Get-Date; Write-Host -ForegroundColor yellow "Start Time: $startTime"
     New-AzResourceGroupDeployment -Name "initialDeploy" -ResourceGroupName $resourceGroupName -TemplateFile $templateFile -Count $numVms -templateParameterFile $parameterFile

@@ -26,7 +26,11 @@ function Add-DesktopShortCutsToDefaultProfile {
 }
 
 function Disable-NetworkDiscovery {
-    netsh advfirewall firewall set rule group="Network Discovery" new enable=No | Out-File c:\out.txt
+  #  netsh advfirewall firewall set rule group="Network Discovery" new enable=No | Out-File c:\out.txt
+}
+
+function Show-FavoritesBar {
+   # HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppContainer\Storage\microsoft.microsoftedge_8wekyb3d8bbwe\MicrosoftEdge\LinksBar 
 }
 
 function Add-ArtUser {
@@ -35,7 +39,12 @@ function Add-ArtUser {
     net localgroup "Remote Desktop Users" art /add
 }
 
+function Get-BookMarks {
+    Inovke-WebRequest "" -OutFile "C:\Users\Default\Desktop\Bookmarks.html"
+}
+
 Disable-OOBE
 Add-DesktopShortCutsToDefaultProfile
 Add-ArtUser
 Disable-NetworkDiscovery
+Get-BookMarks
