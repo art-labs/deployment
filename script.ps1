@@ -40,7 +40,7 @@ function Add-ArtUser {
 }
 
 function Get-BookMarks {
-    Inovke-WebRequest "https://raw.githubusercontent.com/art-labs/deployment/master/Bookmarks.html" -OutFile "C:\Users\Default\Desktop\Bookmarks.html"
+    Invoke-WebRequest "https://raw.githubusercontent.com/art-labs/deployment/master/Bookmarks.html" -OutFile "C:\Users\Default\Desktop\Bookmarks.html"
 }
 
 Disable-OOBE
