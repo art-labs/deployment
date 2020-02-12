@@ -1,15 +1,3 @@
-# The pause function is from https://stackoverflow.com/questions/20886243/press-any-key-to-continue
-Function pause ($message) {
-    # Check if running Powershell ISE
-    if ($psISE) {
-        Add-Type -AssemblyName System.Windows.Forms
-        [System.Windows.Forms.MessageBox]::Show("$message")
-    }
-    else {
-        Write-Host "$message" -ForegroundColor Yellow
-        $x = $host.ui.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    }
-}
 function Deploy-Lab {
 
     Param(
@@ -37,16 +25,23 @@ function Deploy-Lab {
 
     $ips = Get-AzPublicIpAddress -ResourceGroupName $resourceGroupName | Select-Object -Property "IpAddress"
 
-    $count = 0
+    $batchSize = 5
+    $delayBetweenBatches = 10
+    $count = 1
+    $cred = Get-Content "pcs.txt"
     foreach ($ip in $ips.IpAddress) {
         Write-Host -ForegroundColor Magenta $ip
-        Connect-RDP -ComputerName  $ip -Credential $cred
-        if (($count % 5 -eq 0) -and ($count -ne 0)) {
-            pause "press any key to continue"
+        start-process -FilePath "powershell.exe" -ArgumentList "-exec bypass & {
+            `$User = \`"art\`"
+            `$Password = \`"$Cred\`"
+            cmdkey.exe /generic:$ip /user:`$User /pass:`$Password
+            mstsc.exe /v $ip /f
+        }" -NoNewWindow
+        if ($count % $batchSize -eq 0) {
+            Start-Sleep -Seconds $delayBetweenBatches
+            Stop-Process -Name "mstsc"
         }
-
         $count = $count + 1
-
     }
 
     Write-Host -ForegroundColor Green "Destroy this resource group with the following command:"
