@@ -60,4 +60,4 @@ Destroy the Resource Group and all of it's resources. This example destroys the 
 Remove-AzResourceGroup art-lab
 ```
 
-Verify resources are removed by logging into portal.azure.com and clicking `Resource Groups`. The only resource groups you should see there are "key-vault" and "NetworkWatcherRG"
+Verify resources are removed by logging into [https://portal.azure.com](https://portal.azure.com) and clicking `Resource Groups`. The only resource groups you should see there are "key-vault" and "NetworkWatcherRG"
