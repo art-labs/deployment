@@ -41,7 +41,7 @@ function Deploy-Lab {
         $batchSize = 5
         $delayBetweenBatches = 20
         $count = 1
-        $cred = Get-Content "pcs.txt"
+        $cred = Get-Content "pcs.txt" # must create this file in directory where you are executing Deploy-Lab, contains the 'art' user RDP password
         foreach ($ip in $ips.IpAddress) {
             start-process -FilePath "powershell.exe" -ArgumentList "-exec bypass & {
             `$User = \`"art\`"
@@ -52,6 +52,7 @@ function Deploy-Lab {
             if ($count % $batchSize -eq 0) {
                 Start-Sleep -Seconds $delayBetweenBatches
                 Stop-Process -Name "mstsc"
+                Start-Sleep -Seconds 0.5
             }
             $count = $count + 1
         }
