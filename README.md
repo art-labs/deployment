@@ -61,3 +61,9 @@ Remove-AzResourceGroup art-lab
 ```
 
 Verify resources are removed by logging into [https://portal.azure.com](https://portal.azure.com) and clicking `Resource Groups`. The only resource groups you should see there are "key-vault" and "NetworkWatcherRG"
+
+You may override the certificate check for ALL RDP connections (use it at your own risk)
+
+```
+reg add "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client" /v "AuthenticationLevelOverride" /t "REG_DWORD" /d 0 /f
+```
