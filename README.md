@@ -76,6 +76,12 @@ List Azure VM Usage
 Get-AzVMUsage
 ```
 
+List Azure Network Usage (pay special attention to Standard Sku Public IP Addresses)
+
+```powershell
+Get-AzNetworkUsage
+```
+
 ## Azure Account Setup
 
 When you first create your Azure Subscription you will only be able to deploy 5 VMs max. To increase the limits, go to "Help & Support" and submit a quota increase request as follows.
