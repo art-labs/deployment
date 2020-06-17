@@ -73,13 +73,13 @@ Verify resources are removed by logging into [https://portal.azure.com](https://
 List Azure VM Usage
 
 ```powershell
-Get-AzVMUsage
+Get-AzVMUsage -Location eastus
 ```
 
 List Azure Network Usage (pay special attention to Standard Sku Public IP Addresses)
 
 ```powershell
-Get-AzNetworkUsage
+Get-AzNetworkUsage -Location eastus | Where-Object {$_.CurrentValue -gt 0} | Format-Table ResourceType, CurrentValue, Limit
 ```
 
 ## Azure Account Setup
