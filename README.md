@@ -76,7 +76,7 @@ List Azure VM Usage
 Get-AzVMUsage -Location eastus
 ```
 
-List Azure Network Usage (pay special attention to Standard Sku Public IP Addresses)
+List Azure Network Usage (pay special attention `Public IP Addresses`)
 
 ```powershell
 Get-AzNetworkUsage -Location eastus | Where-Object {$_.CurrentValue -gt 0} | Format-Table ResourceType, CurrentValue, Limit
