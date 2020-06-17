@@ -22,7 +22,7 @@ cd deployment
 notepad pcs.txt
 ```
 
-During deployment, an RDP connecion will be initiated to each VM so that the slow first login can occur. You may override the certificate check for ALL RDP connections (use it at your own risk)
+During deployment, an RDP connecion will be initiated to each VM so that the slow first login can occur. You can override the certificate check for ALL RDP connections using the following command. (not a great security practice btw but helpful for deployment)
 
 ```
 reg add "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client" /v "AuthenticationLevelOverride" /t "REG_DWORD" /d 0 /f
