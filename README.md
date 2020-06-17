@@ -22,6 +22,12 @@ cd deployment
 notepad pcs.txt
 ```
 
+During deployment, an RDP connecion will be initiated to each VM so that the slow first login can occur. You may override the certificate check for ALL RDP connections (use it at your own risk)
+
+```
+reg add "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client" /v "AuthenticationLevelOverride" /t "REG_DWORD" /d 0 /f
+```
+
 ## Deploying the lab
 
 Start Powershell and connect to your Azure Account
@@ -62,8 +68,31 @@ Remove-AzResourceGroup art-lab
 
 Verify resources are removed by logging into [https://portal.azure.com](https://portal.azure.com) and clicking `Resource Groups`. The only resource groups you should see there are "key-vault" and "NetworkWatcherRG"
 
-You may override the certificate check for ALL RDP connections (use it at your own risk)
+## Miscellaneous
+
+List Azure VM Usage
+
+```powershell
+Get-AzVMUsage
+```
+
+## Azure Account Setup
+
+When you first create your Azure Subscription you will only be able to deploy 5 VMs max. To increase the limits, go to "Help & Support" and submit a quota increase request as follows.
 
 ```
-reg add "HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client" /v "AuthenticationLevelOverride" /t "REG_DWORD" /d 0 /f
+Increase 'Total Regional vCPUs' limit -
+1) Deployment Model: Resource Manager
+2) Region: East US
+3) New Limit: 200
+
+Increase 'Standard BS Family vCPUs' limit -
+1) Deployment Model: Resource Manager
+2) Region: East US
+3) New Limit: 200
+
+Increase 'Public IP Addresses' to 100
+1) Deployment Model: Resource Manager
+2) Region: East US
+3) New Limit: 100
 ```
