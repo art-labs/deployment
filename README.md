@@ -73,7 +73,7 @@ Verify resources are removed by logging into [https://portal.azure.com](https://
 List Azure VM Usage
 
 ```powershell
-Get-AzVMUsage -Location eastus | Where-Object {$_.CurrentValue -gt 0} | Format-Table ResourceType, CurrentValue, Limit
+Get-AzVMUsage -Location eastus | Where-Object {$_.CurrentValue -gt 0}
 ```
 
 List Azure Network Usage (pay special attention `Public IP Addresses`)
