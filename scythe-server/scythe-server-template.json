@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vm_base_name": {
-            "defaultValue": "scythe-server-vm",
+            "defaultValue": "scytheservervm",
             "type": "String"
         },
         "neti_base_name": {
@@ -78,7 +78,7 @@
                         }
                     },
                     {
-                        "name": "Port_443",
+                        "name": "HTTPS",
                         "properties": {
                             "protocol": "*",
                             "sourcePortRange": "*",
@@ -86,7 +86,7 @@
                             "sourceAddressPrefix": "*",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
-                            "priority": 320,
+                            "priority": 330,
                             "direction": "Inbound",
                             "sourcePortRanges": [],
                             "destinationPortRanges": [],
@@ -100,7 +100,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2020-05-01",
-            "name": "[parameters('ip_base_name')]",
+            "name": "[concat(parameters('ip_base_name'),'_', copyIndex())]",
             "location": "eastus",
             "sku": {
                 "name": "Basic"
@@ -111,6 +111,10 @@
                 "publicIPAllocationMethod": "Dynamic",
                 "idleTimeoutInMinutes": 4,
                 "ipTags": []
+            },
+            "copy": {
+                "name": "publicIPAddrCopy",
+                "count": "[parameters('count')]"
             }
         },
         {
@@ -143,6 +147,28 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-05-01",
+            "name": "[concat(parameters('nsg_base_name'), '/RDP')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_base_name'))]"
+            ],
+            "properties": {
+                "protocol": "*",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix":  "96.19.77.238",
+                "access": "Allow",
+                "priority": 300,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "apiVersion": "2020-05-01",
             "name": "[concat(parameters('nsg_base_name'), '/Port_8443')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_base_name'))]"
@@ -165,18 +191,18 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2020-05-01",
-            "name": "[concat(parameters('nsg_base_name'), '/RDP')]",
+            "name": "[concat(parameters('nsg_base_name'), '/HTTPS')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_base_name'))]"
             ],
             "properties": {
-                "protocol": "TCP",
+                "protocol": "*",
                 "sourcePortRange": "*",
-                "destinationPortRange": "3389",
+                "destinationPortRange": "443",
                 "sourceAddressPrefix": "*",
                 "destinationAddressPrefix": "*",
                 "access": "Allow",
-                "priority": 300,
+                "priority": 330,
                 "direction": "Inbound",
                 "sourcePortRanges": [],
                 "destinationPortRanges": [],
@@ -201,11 +227,15 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-07-01",
-            "name": "[parameters('vm_base_name')]",
+            "name": "[concat(parameters('vm_base_name'),copyIndex())]",
             "location": "eastus",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces', parameters('neti_base_name'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('neti_base_name'),'_',copyIndex()))]"
             ],
+            "copy": {
+                "name": "vmloop",
+                "count": "[parameters('count')]"
+            },
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "Standard_D2s_v3"
@@ -216,7 +246,7 @@
                     },
                     "osDisk": {
                         "osType": "Windows",
-                        "name": "[concat(parameters('vm_base_name'), '_disk2_28d2d98815b64318b2e12e7309419605')]",
+                        "name": "[concat(parameters('vm_base_name'),copyIndex())]",
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
@@ -226,7 +256,7 @@
                     "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "template-creati",
+                    "computerName": "[concat(parameters('vm_base_name'),copyIndex())]",
                     "adminUsername": "dc8",
                     "adminPassword": "[parameters('admin_password')]",
                     "windowsConfiguration": {
@@ -239,7 +269,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('neti_base_name'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('neti_base_name'),'_',copyIndex()))]"
                         }
                     ]
                 }
@@ -248,13 +278,17 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2020-05-01",
-            "name": "[parameters('neti_base_name')]",
+            "name": "[concat(parameters('neti_base_name'),'_',copyIndex())]",
             "location": "eastus",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('ip_base_name'))]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('ip_base_name'),'_',copyIndex()))]",
                 "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet_base_name'), 'default')]",
                 "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_base_name'))]"
             ],
+            "copy": {
+                "name": "networkInterfaceCount",
+                "count": "[parameters('count')]"
+            },
             "properties": {
                 "ipConfigurations": [
                     {
@@ -263,7 +297,7 @@
                             "privateIPAddress": "10.0.0.4",
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('ip_base_name'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(parameters('ip_base_name'),'_',copyIndex()))]"
                             },
                             "subnet": {
                                 "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet_base_name'), 'default')]"
