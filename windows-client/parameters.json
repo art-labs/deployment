@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "admin_password": {
+          "reference": {
+            "keyVault": {
+            "id": "/subscriptions/21ff69ea-68ef-4b92-a775-8585f7e9d3b7/resourceGroups/key-vault/providers/Microsoft.KeyVault/vaults/art-lab-key-vault2"
+            },
+            "secretName": "adminPassword"
+          }
+        }
+    }
+  }

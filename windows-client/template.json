@@ -23,7 +23,7 @@
             "type": "String"
         },
         "count": {
-            "defaultValue": 2,
+            "defaultValue": 1,
             "type": "int"
         },
         "admin_password": {
@@ -191,7 +191,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
-                        "https://raw.githubusercontent.com/art-labs/deployment/master/script.ps1"
+                        "https://raw.githubusercontent.com/art-labs/deployment/master/windows-client/script.ps1"
                     ],
                     "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File script.ps1',' -Password ', parameters('admin_password'))]"
                 },
