@@ -155,8 +155,8 @@
                 "protocol": "*",
                 "sourcePortRange": "*",
                 "destinationPortRange": "3389",
-                "sourceAddressPrefix": "*",
-                "destinationAddressPrefix":  "96.19.77.238",
+                "sourceAddressPrefix": "96.19.77.238",
+                "destinationAddressPrefix":  "*",
                 "access": "Allow",
                 "priority": 300,
                 "direction": "Inbound",
@@ -246,7 +246,7 @@
                     },
                     "osDisk": {
                         "osType": "Windows",
-                        "name": "[concat(parameters('vm_base_name'),copyIndex())]",
+                        "name": "[concat(parameters('vm_base_name'), '_disk','_',copyIndex())]",
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
