@@ -53,7 +53,7 @@ function Set-LabBookmark {
 # Disable-OOBE
 # Desktop shortcuts are already part of the image
 # Add-DesktopShortCutsToDefaultProfile
-Add-ArtUser
-Disable-NetworkDiscovery
+#Add-ArtUser
+#Disable-NetworkDiscovery
 Get-BookMarks
 Set-LabBookmark
