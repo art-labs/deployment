@@ -51,7 +51,8 @@ function Set-LabBookmark ($labsURL) {
 }
 
 Disable-OOBE
-Add-DesktopShortCutsToDefaultProfile
+# Desktop shortcuts are already part of the image
+# Add-DesktopShortCutsToDefaultProfile
 Add-ArtUser
 Disable-NetworkDiscovery
 Get-BookMarks
