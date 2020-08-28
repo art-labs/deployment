@@ -44,6 +44,8 @@ function Get-BookMarks {
 }
 
 function Set-LabBookmark ($labsURL) {
+    Set-Content "C:\Users\art\Desktop\password.txt" $Password
+    Set-Content "C:\Users\art\Desktop\labsurl.txt" $labsURL
     (Get-Content -raw "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks") | ForEach-Object {
         $_ -replace 'http://labs-url/', $labsURL |
         Add-Member NoteProperty PSPath $_.PSPath -PassThru
