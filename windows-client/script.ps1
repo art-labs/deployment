@@ -1,4 +1,4 @@
-param([string] $Password)
+param([string] $Password, [string] $labsURL)
 
 function Disable-OOBE {
     $p = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OOBE"
@@ -40,7 +40,14 @@ function Add-ArtUser {
 }
 
 function Get-BookMarks {
-    Invoke-WebRequest "https://raw.githubusercontent.com/art-labs/deployment/master/windows-client/Bookmarks.html" -OutFile "C:\Users\Default\Desktop\Bookmarks.html"
+    Invoke-WebRequest "https://raw.githubusercontent.com/art-labs/deployment/master/Bookmarks" -OutFile "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks"
+}
+
+function Set-LabBookmark ($labsURL) {
+    (Get-Content -raw "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks") | ForEach-Object {
+        $_ -replace 'http://labs-url/', $labsURL |
+        Add-Member NoteProperty PSPath $_.PSPath -PassThru
+    } | Set-Content -nonewline
 }
 
 Disable-OOBE
@@ -48,3 +55,4 @@ Add-DesktopShortCutsToDefaultProfile
 Add-ArtUser
 Disable-NetworkDiscovery
 Get-BookMarks
+Set-LabBookmark
