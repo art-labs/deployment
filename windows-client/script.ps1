@@ -50,6 +50,13 @@ function Set-LabBookmark ($labsURL) {
     } | Set-Content -nonewline
 }
 
+function Set-ChromeAsDefaultBrowser {
+    Add-Type -AssemblyName 'System.Windows.Forms'
+    Start-Process $env:windir\system32\control.exe -ArgumentList '/name Microsoft.DefaultPrograms /page pageDefaultProgram\pageAdvancedSettings?pszAppName=google%20chrome'
+    Sleep 2
+    [System.Windows.Forms.SendKeys]::SendWait("{TAB}{TAB}{TAB}{TAB}{TAB} {ENTER}{ENTER}")
+}
+
 # Disable-OOBE
 # Desktop shortcuts are already part of the image
 # Add-DesktopShortCutsToDefaultProfile
@@ -57,3 +64,4 @@ function Set-LabBookmark ($labsURL) {
 #Disable-NetworkDiscovery
 Get-BookMarks
 Set-LabBookmark $labsURL
+Set-ChromeAsDefaultBrowser
