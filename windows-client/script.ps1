@@ -43,7 +43,7 @@ function Get-BookMarks {
     Invoke-WebRequest "https://raw.githubusercontent.com/art-labs/deployment/master/Bookmarks" -OutFile "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks"
 }
 
-function Set-LabBookmark ($labsURL) {
+function Set-LabBookmark {
     (Get-Content -raw "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks") | ForEach-Object {
         $_ -replace 'http://labs-url/', $labsURL |
         Add-Member NoteProperty PSPath $_.PSPath -PassThru
