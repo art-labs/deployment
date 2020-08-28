@@ -43,9 +43,9 @@ function Get-BookMarks {
     Invoke-WebRequest "https://raw.githubusercontent.com/art-labs/deployment/master/Bookmarks" -OutFile "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks"
 }
 
-function Set-LabBookmark {
+function Set-LabBookmark ($labsURL) {
     (Get-Content -raw "C:\Users\art\AppData\Local\Google\Chrome\User Data\Default\Bookmarks") | ForEach-Object {
-        $_ -replace 'http://labs-url/', "http://sometest/" |
+        $_ -replace 'http://labs-url/', $labsURL |
         Add-Member NoteProperty PSPath $_.PSPath -PassThru
     } | Set-Content -nonewline
 }
@@ -56,4 +56,4 @@ function Set-LabBookmark {
 #Add-ArtUser
 #Disable-NetworkDiscovery
 Get-BookMarks
-Set-LabBookmark
+Set-LabBookmark $labsURL
