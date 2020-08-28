@@ -50,7 +50,7 @@ function Set-LabBookmark ($labsURL) {
     } | Set-Content -nonewline
 }
 
-Disable-OOBE
+# Disable-OOBE
 # Desktop shortcuts are already part of the image
 # Add-DesktopShortCutsToDefaultProfile
 Add-ArtUser
