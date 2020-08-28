@@ -117,7 +117,7 @@
                "id": "21",
                "name": "Caldera Server",
                "type": "url",
-               "url": "http://caldera-ip:8888/"
+               "url": "http://localhost:8888/"
             } ],
             "date_added": "13243046654178236",
             "date_modified": "13243046654178476",
